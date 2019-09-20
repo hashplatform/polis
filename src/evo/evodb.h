@@ -1,4 +1,4 @@
-// Copyright (c) 2018 The Polis Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,7 +9,9 @@
 #include "sync.h"
 #include "uint256.h"
 
-static const std::string EVODB_BEST_BLOCK = "b_b";
+// "b_b" was used in the initial version of deterministic MN storage
+// "b_b2" was used after compact diffs were introduced
+static const std::string EVODB_BEST_BLOCK = "b_b2";
 
 class CEvoDB
 {
@@ -33,6 +35,11 @@ public:
         LOCK(cs);
         auto t = ScopedTransaction::Begin(curDBTransaction);
         return t;
+    }
+
+    CurTransaction& GetCurTransaction()
+    {
+        return curDBTransaction;
     }
 
     template <typename K, typename V>
@@ -66,6 +73,11 @@ public:
     CDBWrapper& GetRawDB()
     {
         return db;
+    }
+
+    size_t GetMemoryUsage()
+    {
+        return rootDBTransaction.GetMemoryUsage();
     }
 
     bool CommitRootTransaction();

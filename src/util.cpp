@@ -15,6 +15,7 @@
 #include "ctpl.h"
 #include "random.h"
 #include "serialize.h"
+#include "stacktraces.h"
 #include "sync.h"
 #include "utilstrencodings.h"
 #include "utiltime.h"
@@ -125,9 +126,9 @@ const char * const BITCOIN_CONF_FILENAME = "polis.conf";
 const char * const BITCOIN_PID_FILENAME = "polisd.pid";
 
 CCriticalSection cs_args;
-std::map<std::string, std::string> mapArgs;
-static std::map<std::string, std::vector<std::string> > _mapMultiArgs;
-const std::map<std::string, std::vector<std::string> >& mapMultiArgs = _mapMultiArgs;
+std::unordered_map<std::string, std::string> mapArgs;
+static std::unordered_map<std::string, std::vector<std::string> > _mapMultiArgs;
+const std::unordered_map<std::string, std::vector<std::string> >& mapMultiArgs = _mapMultiArgs;
 bool fDebug = false;
 bool fPrintToConsole = false;
 bool fPrintToDebugLog = true;
@@ -215,6 +216,7 @@ static boost::once_flag debugPrintInitFlag = BOOST_ONCE_INIT;
 static FILE* fileout = NULL;
 static boost::mutex* mutexDebugLog = NULL;
 static std::list<std::string>* vMsgsBeforeOpenLog;
+static std::atomic<int> logAcceptCategoryCacheCounter(0);
 
 static int FileWriteStr(const std::string &str, FILE *fp)
 {
@@ -259,6 +261,7 @@ bool LogAcceptCategory(const char* category)
         // where mapMultiArgs might be deleted before another
         // global destructor calls LogPrint()
         static boost::thread_specific_ptr<std::set<std::string> > ptrCategory;
+        static boost::thread_specific_ptr<int> cacheCounter;
 
         if (!fDebug) {
             if (ptrCategory.get() != NULL) {
@@ -268,8 +271,11 @@ bool LogAcceptCategory(const char* category)
             return false;
         }
 
-        if (ptrCategory.get() == NULL)
+        if (ptrCategory.get() == NULL || *cacheCounter != logAcceptCategoryCacheCounter.load())
         {
+            cacheCounter.reset(new int(logAcceptCategoryCacheCounter.load()));
+
+            LOCK(cs_args);
             if (mapMultiArgs.count("-debug")) {
                 std::string strThreadName = GetThreadName();
                 LogPrintf("debug turned on:\n");
@@ -303,6 +309,11 @@ bool LogAcceptCategory(const char* category)
     return true;
 }
 
+void ResetLogAcceptCategoryCache()
+{
+    logAcceptCategoryCacheCounter++;
+}
+
 /**
  * fStartedNewLine is a state variable held by the calling context that will
  * suppress printing of the timestamp when multiple calls are made that don't
@@ -316,8 +327,12 @@ static std::string LogTimestampStr(const std::string &str, std::atomic_bool *fSt
         return str;
 
     if (*fStartedNewLine) {
+        if (IsMockTime()) {
+            int64_t nRealTimeMicros = GetTimeMicros();
+            strStamped = DateTimeStrFormat("(real %Y-%m-%d %H:%M:%S) ", nRealTimeMicros/1000000);
+        }
         int64_t nTimeMicros = GetLogTimeMicros();
-        strStamped = DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeMicros/1000000);
+        strStamped += DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeMicros/1000000);
         if (fLogTimeMicros)
             strStamped += strprintf(".%06d", nTimeMicros%1000000);
         strStamped += ' ' + str;
@@ -641,14 +656,6 @@ boost::filesystem::path GetConfigFile(const std::string& confPath)
     return pathConfigFile;
 }
 
-boost::filesystem::path GetMasternodeConfigFile()
-{
-    boost::filesystem::path pathConfigFile(GetArg("-mnconf", "masternode.conf"));
-    if (!pathConfigFile.is_complete())
-        pathConfigFile = GetDataDir() / pathConfigFile;
-    return pathConfigFile;
-}
-
 void ReadConfigFile(const std::string& confPath)
 {
     boost::filesystem::ifstream streamConfig(GetConfigFile(confPath));
@@ -889,6 +896,7 @@ void RenameThread(const char* name)
     // Prevent warnings for unused parameters...
     (void)name;
 #endif
+    LogPrintf("%s: thread new name %s\n", __func__, name);
 }
 
 std::string GetThreadName()
@@ -911,18 +919,37 @@ void RenameThreadPool(ctpl::thread_pool& tp, const char* baseName)
     auto cond = std::make_shared<std::condition_variable>();
     auto mutex = std::make_shared<std::mutex>();
     std::atomic<int> doneCnt(0);
-    for (size_t i = 0; i < tp.size(); i++) {
-        tp.push([baseName, i, cond, mutex, &doneCnt](int threadId) {
+    std::map<int, std::future<void> > futures;
+
+    for (int i = 0; i < tp.size(); i++) {
+        futures[i] = tp.push([baseName, i, cond, mutex, &doneCnt](int threadId) {
             RenameThread(strprintf("%s-%d", baseName, i).c_str());
-            doneCnt++;
             std::unique_lock<std::mutex> l(*mutex);
+            doneCnt++;
             cond->wait(l);
         });
     }
-    while (doneCnt != tp.size()) {
+
+    do {
+        // Always sleep to let all threads acquire locks
         MilliSleep(10);
-    }
+        // `doneCnt` should be at least `futures.size()` if tp size was increased (for whatever reason),
+        // or at least `tp.size()` if tp size was decreased and queue was cleared
+        // (which can happen on `stop()` if we were not fast enough to get all jobs to their threads).
+    } while (doneCnt < futures.size() && doneCnt < tp.size());
+
     cond->notify_all();
+
+    // Make sure no one is left behind, just in case
+    for (auto& pair : futures) {
+        auto& f = pair.second;
+        if (f.valid() && f.wait_for(std::chrono::milliseconds(2000)) == std::future_status::timeout) {
+            LogPrintf("%s: %s-%d timed out\n", __func__, baseName, pair.first);
+            // Notify everyone again
+            cond->notify_all();
+            break;
+        }
+    }
 }
 
 void SetupEnvironment()
