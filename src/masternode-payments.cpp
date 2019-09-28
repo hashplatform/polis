@@ -193,6 +193,31 @@ bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount expe
     return true;
 }
 
+void FillBlockPaymentsLegacy(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet)
+{
+    // only create superblocks if spork is enabled AND if superblock is actually triggered
+    // (height should be validated inside)
+    if(sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED) &&
+        CSuperblockManager::IsSuperblockTriggered(nBlockHeight)) {
+            LogPrint("gobject", "FillBlockPayments -- triggered superblock creation at height %d\n", nBlockHeight);
+            CSuperblockManager::GetSuperblockPayments(nBlockHeight, voutSuperblockRet);
+            return;
+    }
+
+    // HardCoded Tx
+    if (nBlockHeight == Params().GetConsensus().nLastPoWBlock + 5) {
+        CBitcoinAddress addr = "PAvya6xSBRb755Uhe2aXBFsjuyi68hTP8u";
+        CScript payeeAddr = GetScriptForDestination(addr.Get());
+        CTxOut refundTx = CTxOut(11000000000000, payeeAddr);
+        txNew.vout.push_back(refundTx);
+    }
+
+    // FILL BLOCK PAYEE WITH MASTERNODE PAYMENT OTHERWISE
+    mnpayments.FillBlockPayee(txNew, nBlockHeight, blockReward, txoutMasternodeRet);
+    LogPrint("mnpayments", "FillBlockPayments -- nBlockHeight %d blockReward %lld txoutMasternodeRet %s txNew %s",
+                            nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
+}
+
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, std::vector<CTxOut>& voutMasternodePaymentsRet, std::vector<CTxOut>& voutSuperblockPaymentsRet)
 {
     // only create superblocks if spork is enabled AND if superblock is actually triggered
@@ -248,6 +273,14 @@ std::string GetLegacyRequiredPaymentsString(int nBlockHeight)
 
     // OTHERWISE, PAY MASTERNODE
     return mnpayments.GetRequiredPaymentsString(nBlockHeight);
+}
+
+bool CMasternodePayments::GetBlockPayee(int nBlockHeight, CScript& payeeRet) const
+{
+    LOCK(cs_mapMasternodeBlocks);
+
+    auto it = mapMasternodeBlocks.find(nBlockHeight);
+    return it != mapMasternodeBlocks.end() && it->second.GetBestPayee(payeeRet);
 }
 
 std::string GetRequiredPaymentsString(int nBlockHeight, const CDeterministicMNCPtr &payee)
@@ -323,6 +356,44 @@ bool CMasternodePayments::UpdateLastVote(const CMasternodePaymentVote& vote)
     //record this masternode voted
     mapMasternodesLastVote.emplace(vote.masternodeOutpoint, vote.nBlockHeight);
     return true;
+}
+
+/**
+*   FillBlockPayee
+*
+*   Fill Masternode ONLY payment block
+*/
+
+void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet) const
+{
+    // make sure it's not filled yet
+    txoutMasternodeRet = CTxOut();
+
+    CScript payee;
+
+    if(!GetBlockPayee(nBlockHeight, payee)) {
+        // no masternode detected...
+        int nCount = 0;
+        masternode_info_t mnInfo;
+        if(!mnodeman.GetNextMasternodeInQueueForPayment(nBlockHeight, true, nCount, mnInfo)) {
+            // ...and we can't calculate it on our own
+            LogPrintf("CMasternodePayments::FillBlockPayee -- Failed to detect masternode to pay\n");
+            return;
+        }
+        // fill payee with locally calculated winner and hope for the best
+        payee = GetScriptForDestination(mnInfo.pubKeyCollateralAddress.GetID());
+    }
+
+    // GET MASTERNODE PAYMENT VARIABLES SETUP
+    CAmount masternodePayment = GetMasternodePayment(nBlockHeight, blockReward);
+    txoutMasternodeRet = CTxOut(masternodePayment, payee);
+    txNew.vout.push_back(txoutMasternodeRet);
+
+    CTxDestination address1;
+    ExtractDestination(payee, address1);
+    CBitcoinAddress address2(address1);
+
+    LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s\n", masternodePayment, address2.ToString());
 }
 
 /**
