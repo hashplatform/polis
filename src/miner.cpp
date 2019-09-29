@@ -140,6 +140,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
     bool fDIP0003Active_context = VersionBitsState(chainActive.Tip(), chainparams.GetConsensus(), Consensus::DEPLOYMENT_DIP0003, versionbitscache) == THRESHOLD_ACTIVE;
 
     CBlockIndex* pindexPrev = chainActive.Tip();
+    assert(pindexPrev != nullptr);
     nHeight = pindexPrev->nHeight + 1;
 
     pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
@@ -179,10 +180,12 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
         bool fStakeFound = false;
         if (nSearchTime >= nLastCoinStakeSearchTime) {
             unsigned int nTxNewTime = 0;
-            if (pwalletMain->CreateCoinStake(pblock->nBits, blockReward, coinstakeTx, nTxNewTime, vwtxPrev)) {
+            if (wallet->CreateCoinStake(pblock->nBits, blockReward, coinstakeTx, nTxNewTime, vwtxPrev)) {
                 pblock->nTime = nTxNewTime;
                 coinbaseTx.vout[0].SetEmpty();
-                FillBlockPayments(coinstakeTx, nHeight, blockReward, pblocktemplate->voutMasternodePayments, pblocktemplate->voutSuperblockPayments);
+                if (fDIP0003Active_context) {
+                       FillBlockPayments(coinstakeTx, nHeight, blockReward, pblocktemplate->voutMasternodePayments, pblocktemplate->voutSuperblockPayments);
+                }
                 pblock->vtx.emplace_back(MakeTransactionRef(coinstakeTx));
                 fStakeFound = true;
             }
@@ -250,7 +253,6 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
         UpdateTime(pblock, chainparams.GetConsensus(), pindexPrev);
     pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
     pblock->nNonce         = 0;
-    pblocktemplate->nPrevBits = pindexPrev->nBits;
     pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(*pblock->vtx[0]);
 
     CValidationState state;
@@ -697,7 +699,7 @@ void static PolisMinter(const CChainParams& chainparams, CConnman& connman,
                 // on an obsolete chain. In regtest mode we expect to fly solo.
                 do {
                     bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
-                    if (!fvNodesEmpty && !IsInitialBlockDownload()  /*&& masternodeSync.IsSynced()*/)
+                    if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
                         break;
                     MilliSleep(1000);
                 } while (true);
@@ -713,9 +715,7 @@ void static PolisMinter(const CChainParams& chainparams, CConnman& connman,
                 }
             }
             if(!fProofOfStake && chainActive.Tip()->nHeight >= chainparams.GetConsensus().nLastPoWBlock)
-            {
                 return;
-            }
             //
             // Create new block
             //

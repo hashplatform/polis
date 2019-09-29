@@ -224,8 +224,10 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeS
     for(unsigned int i = 0; i < nHashDrift; ++i)
     {
         nTryTime = nTimeTx + nHashDrift - i;
-        if (CheckStakeKernelHash(nBits, blockFrom, nTxPrevOffset, txPrev, prevout, nTryTime, hashProofOfStake))
-        {
+        bool fValid = CheckStakeKernelHash(nBits, blockFrom, nTxPrevOffset, txPrev, prevout, nTryTime, hashProofOfStake);
+        if (fDebug)
+            LogPrintf("%04x %s\n", i, hashProofOfStake.ToString().c_str());
+        if (fValid) {
             //Double check that this will pass time requirements
             if (nTryTime <= chainActive.Tip()->GetMedianTimePast()) {
                 LogPrintf("CreateCoinStakeKernel() : kernel found, but it is too far in the past \n");
@@ -4058,12 +4060,28 @@ void CWallet::ListAccountCreditDebit(const std::string& strAccount, std::list<CA
     return walletdb.ListAccountCreditDebit(strAccount, entries);
 }
 
+// legacy polis/xsn routines
+void AdjustMasternodePayment(CMutableTransaction &tx, const CTxOut &txoutMasternodePayment)
+{
+    auto it = std::find(std::begin(tx.vout), std::end(tx.vout), txoutMasternodePayment);
+
+    if(it != std::end(tx.vout))
+    {
+        long mnPaymentOutIndex = std::distance(std::begin(tx.vout), it);
+        auto masternodePayment = tx.vout[mnPaymentOutIndex].nValue;
+        // For the special transaction the vout of MNpayemnt is the first.
+        long i = tx.vout.size() - 2;
+        tx.vout[i].nValue -= masternodePayment; // last vout is mn payment.
+    }
+}
+
 bool CWallet::CreateCoinStake(unsigned int nBits,
                               CAmount blockReward,
                               CMutableTransaction &txNew,
                               unsigned int &nTxNewTime,
                               std::vector<CWalletTx*> &vwtxPrev)
 {
+    bool fDIP0003Active_context = VersionBitsState(chainActive.Tip(), Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0003, versionbitscache) == THRESHOLD_ACTIVE;
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
     //int64_t nCombineThreshold = 0;
@@ -4132,7 +4150,16 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         LogPrintf("Failed to find coinstake kernel");
         return false;
     }
-
+    // Legacy routines
+    if (!fDIP0003Active_context) {
+            unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
+            CTxOut txoutMasternode;
+            std::vector<CTxOut> voutSuperblock;
+            int nHeight = chainActive.Tip()->nHeight + 1;
+            FillBlockPaymentsLegacy(txNew, nHeight, blockReward, txoutMasternode, voutSuperblock);
+            AdjustMasternodePayment(txNew, txoutMasternode);
+            LogPrintf("CreateCoinStake -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s", nHeight, blockReward, txoutMasternode.ToString(), txNew.ToString());
+    }
     nLastStakeSetUpdate = 0;
     return true;
 }
