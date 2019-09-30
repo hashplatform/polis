@@ -1,5 +1,5 @@
 ---
-name: "polis-win-1.5.0"
+name: "polis-win-1.5.1"
 enable_cache: true
 suites:
 - "bionic"
