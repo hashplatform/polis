@@ -34,6 +34,7 @@ extern CMasternodePayments mnpayments;
 /// TODO: all 4 functions do not belong here really, they should be refactored/moved somewhere (main.cpp ?)
 bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount expectedReward, CAmount actualReward, std::string& strErrorRet);
 bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount expectedReward, CAmount actualReward);
+void FillBlockPaymentsLegacy(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet);
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, std::vector<CTxOut>& voutMasternodePaymentsRet, std::vector<CTxOut>& voutSuperblockPaymentsRet);
 std::map<int, std::string> GetRequiredPaymentsStrings(int nStartHeight, int nEndHeight);
 
@@ -198,6 +199,7 @@ public:
     void RequestLowDataPaymentBlocks(CNode* pnode, CConnman& connman) const;
     void CheckAndRemove();
 
+    bool GetBlockPayee(int nBlockHeight, CScript& payeeRet) const;
     bool GetBlockTxOuts(int nBlockHeight, CAmount blockReward, std::vector<CTxOut>& voutMasternodePaymentsRet) const;
     bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
     bool IsScheduled(const masternode_info_t& mnInfo, int nNotBlockHeight) const;
@@ -208,6 +210,7 @@ public:
     void ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman);
     std::string GetRequiredPaymentsString(int nBlockHeight) const;
     bool GetMasternodeTxOuts(int nBlockHeight, CAmount blockReward, std::vector<CTxOut>& voutMasternodePaymentsRet) const;
+    void FillBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet) const;
     std::string ToString() const;
 
     int GetBlockCount() const { return mapMasternodeBlocks.size(); }
