@@ -200,7 +200,7 @@ public:
             consensus.BIP65Height = 84672;  // 00000000000076d8fcea02ec0963de4abfd01e771fec0863f960c2c64fe6f357
             consensus.BIP66Height = 245817; // 00000000000b1fa2dfa312863570e13fae9ca7b5566cb27e55422620b469aefa
             consensus.DIP0001Height = 12096;
-            consensus.DIP0003Height = NEVER32;
+            consensus.DIP0003Height = 453250;
             consensus.DIP0003EnforcementHeight = NEVER32;
             consensus.DIP0003EnforcementHash = uint256();
             consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
@@ -252,18 +252,17 @@ public:
 
             // Deployment of DIP0003
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].bit = 3;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nStartTime = NEVER32;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nTimeout = NEVER32;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nWindowSize = 4032;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nThreshold = 3226;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nStartTime = 1570665600; // 10/10/2019
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nTimeout = 1578549600;   // + 3months
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nWindowSize = 500;       // 500 hosts
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nThreshold = 200;        // 40% of 500 hosts
     
             // Deployment of DIP0008
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].bit = 4;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = NEVER32;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = NEVER32;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nWindowSize = 4032;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 3226;
-
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = 1571875200; // 24/10/2019
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = 1579759200;   // + 3months
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nWindowSize = 500;       // 500 hosts
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 200;        // 40% of 500 hosts
 
             // The best chain should have at least this much work.
             consensus.nMinimumChainWork = uint256S("0x0"); // 134622

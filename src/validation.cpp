@@ -4924,13 +4924,13 @@ int CurrentMinStakeAge(int nTimePeriod)
     const int secondTime  = 60 * 60;
     const int finalTime   = 60 * 60 * 3;
 
-    nTimePeriod = initialTime;
+    int returnTime = initialTime;
     if (nTimePeriod > Params().GetConsensus().nStakeMinAgeSwitchTime)
-        nTimePeriod = secondTime;
+        returnTime = secondTime;
     if (nTimePeriod > Params().GetConsensus().nPosMitigationSwitchTime)
-        nTimePeriod = finalTime;
+        returnTime = finalTime;
 
-    return nTimePeriod;
+    return returnTime;
 }
 
 //! Return the current ReturnMessageSigningMagic(GetTime())
