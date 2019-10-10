@@ -4,22 +4,20 @@
 
 #include "governancedialog.h"
 #include "ui_governancedialog.h"
-#include "masternode.h"
-#include "masternode-sync.h"
-#include "masternodeconfig.h"
-#include "masternodeman.h"
-#include "governance.h"
-#include "governance-vote.h"
-#include "governance-classes.h"
-#include "governance-validators.h"
-#include "bitcoinunits.h"
-#include "guiconstants.h"
-#include "guiutil.h"
-#include "messagesigner.h"
-#include "optionsmodel.h"
-#include "walletmodel.h"
-#include "../governance.h"
-#include "validation.h"
+
+#include <masternode-sync.h>
+#include <governance.h>
+#include <governance-vote.h>
+#include <governance-classes.h>
+#include <governance-validators.h>
+#include <bitcoinunits.h>
+#include <guiconstants.h>
+#include <guiutil.h>
+#include <messagesigner.h>
+#include <optionsmodel.h>
+#include <walletmodel.h>
+#include <validation.h>
+
 #include <QClipboard>
 #include <QDrag>
 #include <QMenu>
@@ -31,7 +29,7 @@
 #endif
 
 #if defined(HAVE_CONFIG_H)
-#include "config/polis-config.h" /* for USE_QRCODE */
+#include "config/polis-config.h"
 #endif
 
 #ifdef USE_QRCODE
