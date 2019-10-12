@@ -745,10 +745,10 @@ void static PolisMinter(const CChainParams& chainparams, CConnman& connman,
                 LogPrintf("CPUMiner : proof-of-stake block was signed %s \n", pblock->GetHash().ToString().c_str());
             }
             // check if block is valid
-            // CValidationState state;
-            // if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-            //    throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
-            // }
+             CValidationState state;
+            if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+                throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+             }
             // process proof of stake block
             if(fProofOfStake) {
                 LogPrintf("Processing POS block");
