@@ -2450,15 +2450,21 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
             : GetBlockSubsidy(pindex->pprev->nHeight,chainparams.GetConsensus());
 
     std::string strError = "";
+    if (chainActive.Height() > fFullComplianceHeight) {
     if (!IsBlockValueValid(block, pindex->nHeight, expectedReward, pindex->nMint, strError)) {
         return state.DoS(0, error("ConnectBlock(POLIS): %s", strError), REJECT_INVALID, "bad-cb-amount");
-    }
+    }}
 
     const auto& coinbaseTransaction = (pindex->nHeight >= Params().GetConsensus().nLastPoWBlock ? block.vtx[1] : block.vtx[0]);
 
-    if (!IsBlockPayeeValid(*coinbaseTransaction, pindex->nHeight, expectedReward/*, pindex->nMint*/)) {
+    if (chainActive.Height() > fFullComplianceHeight) {
+    if (!IsBlockPayeeValid(*coinbaseTransaction, pindex->nHeight, expectedReward)) {
         return state.DoS(0, error("ConnectBlock(POLIS): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
+    }}
+
+    if (!ProcessSpecialTxsInBlock(block, pindex, state, fJustCheck, fScriptChecks)) {
+        return error("ConnectBlock(POLIS): ProcessSpecialTxsInBlock for block failed with %s", FormatStateMessage(state));
     }
     // END POLIS
 
@@ -3647,12 +3653,6 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Co
         if (block.vtx[0]->vin[0].scriptSig.size() < expect.size() ||
             !std::equal(expect.begin(), expect.end(), block.vtx[0]->vin[0].scriptSig.begin())) {
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-height", false, "block height mismatch in coinbase");
-        }
-    }
-
-    if (fDIP0003Active_context) {
-        if (block.vtx[0]->nType != TRANSACTION_COINBASE) {
-            return state.DoS(100, false, REJECT_INVALID, "bad-cb-type", false, "coinbase is not a CbTx");
         }
     }
 
