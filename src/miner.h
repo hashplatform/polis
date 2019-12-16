@@ -23,6 +23,8 @@ class CWallet;
 
 namespace Consensus { struct Params; };
 
+extern int64_t nLastCoinStakeSearchInterval;
+
 static const bool DEFAULT_PRINTPRIORITY = false;
 
 struct CBlockTemplate
