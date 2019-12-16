@@ -104,6 +104,7 @@ public:
     void Init(size_t size);
     bool IsSet(uint16_t quorumMember) const;
     void Set(uint16_t quorumMember, bool v);
+    void SetAll(bool v);
     void Merge(const CSigSharesInv& inv2);
 
     size_t CountSet() const;
@@ -329,9 +330,8 @@ public:
 
 class CSigSharesManager : public CRecoveredSigsListener
 {
-    static const int64_t SESSION_NEW_SHARES_TIMEOUT = 60 * 1000;
-    static const int64_t SESSION_TOTAL_TIMEOUT = 5 * 60 * 1000;
-    static const int64_t SIG_SHARE_REQUEST_TIMEOUT = 5 * 1000;
+    static const int64_t SESSION_NEW_SHARES_TIMEOUT = 60;
+    static const int64_t SIG_SHARE_REQUEST_TIMEOUT = 5;
 
     // we try to keep total message size below 10k
     const size_t MAX_MSGS_CNT_QSIGSESANN = 100;
@@ -348,8 +348,8 @@ private:
 
     SigShareMap<CSigShare> sigShares;
 
-    // stores time of first and last receivedSigShare. Used to detect timeouts
-    std::unordered_map<uint256, std::pair<int64_t, int64_t>, StaticSaltedHasher> timeSeenForSessions;
+    // stores time of last receivedSigShare. Used to detect timeouts
+    std::unordered_map<uint256, int64_t, StaticSaltedHasher> timeSeenForSessions;
 
     std::unordered_map<NodeId, CSigSharesNodeState> nodeStates;
     SigShareMap<std::pair<NodeId, int64_t>> sigSharesRequested;
@@ -378,6 +378,7 @@ public:
 
     void AsyncSign(const CQuorumCPtr& quorum, const uint256& id, const uint256& msgHash);
     void Sign(const CQuorumCPtr& quorum, const uint256& id, const uint256& msgHash);
+    void ForceReAnnouncement(const CQuorumCPtr& quorum, Consensus::LLMQType llmqType, const uint256& id, const uint256& msgHash);
 
     void HandleNewRecoveredSig(const CRecoveredSig& recoveredSig);
 

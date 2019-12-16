@@ -82,6 +82,13 @@ void CSigSharesInv::Set(uint16_t quorumMember, bool v)
     inv[quorumMember] = v;
 }
 
+void CSigSharesInv::SetAll(bool v)
+{
+    for (size_t i = 0; i < inv.size(); i++) {
+        inv[i] = v;
+    }
+}
+
 std::string CBatchedSigShares::ToInvString() const
 {
     CSigSharesInv inv;
@@ -676,18 +683,10 @@ void CSigSharesManager::ProcessSigShare(NodeId nodeId, const CSigShare& sigShare
         if (!sigShares.Add(sigShare.GetKey(), sigShare)) {
             return;
         }
-        
         sigSharesToAnnounce.Add(sigShare.GetKey(), true);
 
-        auto it = timeSeenForSessions.find(sigShare.GetSignHash());
-        if (it == timeSeenForSessions.end()) {
-            auto t = GetTimeMillis();
-            // insert first-seen and last-seen time
-            timeSeenForSessions.emplace(sigShare.GetSignHash(), std::make_pair(t, t));
-        } else {
-            // update last-seen time
-            it->second.second = GetTimeMillis();
-        }
+        // Update the time we've seen the last sigShare
+        timeSeenForSessions[sigShare.GetSignHash()] = GetAdjustedTime();
 
         if (!quorumNodes.empty()) {
             // don't announce and wait for other nodes to request this share and directly send it to them
@@ -786,7 +785,7 @@ void CSigSharesManager::CollectSigSharesToRequest(std::unordered_map<NodeId, std
 {
     AssertLockHeld(cs);
 
-    int64_t now = GetTimeMillis();
+    int64_t now = GetAdjustedTime();
     const size_t maxRequestsForNode = 32;
 
     // avoid requesting from same nodes all the time
@@ -1152,8 +1151,8 @@ CSigShare CSigSharesManager::RebuildSigShare(const CSigSharesNodeState::SessionI
 
 void CSigSharesManager::Cleanup()
 {
-    int64_t now = GetTimeMillis();
-    if (now - lastCleanupTime < 5000) {
+    int64_t now = GetAdjustedTime();
+    if (now - lastCleanupTime < 5) {
         return;
     }
 
@@ -1215,10 +1214,9 @@ void CSigSharesManager::Cleanup()
         std::unordered_set<uint256, StaticSaltedHasher> timeoutSessions;
         for (auto& p : timeSeenForSessions) {
             auto& signHash = p.first;
-            int64_t firstSeenTime = p.second.first;
-            int64_t lastSeenTime = p.second.second;
+            int64_t lastSeenTime = p.second;
 
-            if (now - firstSeenTime >= SESSION_TOTAL_TIMEOUT || now - lastSeenTime >= SESSION_NEW_SHARES_TIMEOUT) {
+            if (now - lastSeenTime >= SESSION_NEW_SHARES_TIMEOUT) {
                 timeoutSessions.emplace(signHash);
             }
         }
@@ -1275,7 +1273,7 @@ void CSigSharesManager::Cleanup()
         nodeStates.erase(nodeId);
     }
 
-    lastCleanupTime = GetTimeMillis();
+    lastCleanupTime = GetAdjustedTime();
 }
 
 void CSigSharesManager::RemoveSigSharesForSession(const uint256& signHash)
@@ -1434,6 +1432,31 @@ void CSigSharesManager::Sign(const CQuorumCPtr& quorum, const uint256& id, const
     LogPrint("llmq-sigs", "CSigSharesManager::%s -- signed sigShare. signHash=%s, id=%s, msgHash=%s, llmqType=%d, quorum=%s, time=%s\n", __func__,
               signHash.ToString(), sigShare.id.ToString(), sigShare.msgHash.ToString(), quorum->params.type, quorum->qc.quorumHash.ToString(), t.count());
     ProcessSigShare(-1, sigShare, *g_connman, quorum);
+}
+
+// causes all known sigShares to be re-announced
+void CSigSharesManager::ForceReAnnouncement(const CQuorumCPtr& quorum, Consensus::LLMQType llmqType, const uint256& id, const uint256& msgHash)
+{
+    LOCK(cs);
+    auto signHash = CLLMQUtils::BuildSignHash(llmqType, quorum->qc.quorumHash, id, msgHash);
+    auto sigs = sigShares.GetAllForSignHash(signHash);
+    if (sigs) {
+        for (auto& p : *sigs) {
+            // re-announce every sigshare to every node
+            sigSharesToAnnounce.Add(std::make_pair(signHash, p.first), true);
+        }
+    }
+    for (auto& p : nodeStates) {
+        CSigSharesNodeState& nodeState = p.second;
+        auto session = nodeState.GetSessionBySignHash(signHash);
+        if (!session) {
+            continue;
+        }
+        // pretend that the other node doesn't know about any shares so that we re-announce everything
+        session->knows.SetAll(false);
+        // we need to use a new session id as we don't know if the other node has run into a timeout already
+        session->sendSessionId = (uint32_t)-1;
+    }
 }
 
 void CSigSharesManager::HandleNewRecoveredSig(const llmq::CRecoveredSig& recoveredSig)
