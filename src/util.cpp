@@ -571,7 +571,7 @@ boost::filesystem::path GetDefaultDataDir()
     // Unix: ~/.poliscore
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Polis";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "PolisCore";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -581,7 +581,7 @@ boost::filesystem::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Polis";
+    return pathRet / "Library/Application Support/PolisCore";
 #else
     // Unix
     return pathRet / ".poliscore";
