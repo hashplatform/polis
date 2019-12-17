@@ -22,7 +22,7 @@ public:
     std::string paramName;  //!< parameter name
 };
 /**
- * Specifiy a (method, idx, name) here if the argument is a non-string RPC
+ * Specify a (method, idx, name) here if the argument is a non-string RPC
  * argument and needs to be converted from JSON.
  *
  * @note Parameter indexes start from 0.
@@ -132,11 +132,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "keypoolrefill", 0, "newsize" },
     { "getrawmempool", 0, "verbose" },
     { "estimatefee", 0, "nblocks" },
-    { "estimatepriority", 0, "nblocks" },
     { "estimatesmartfee", 0, "nblocks" },
-    { "estimatesmartpriority", 0, "nblocks" },
-    { "prioritisetransaction", 1, "priority_delta" },
-    { "prioritisetransaction", 2, "fee_delta" },
+    { "prioritisetransaction", 1, "fee_delta" },
     { "setban", 2, "bantime" },
     { "setban", 3, "absolute" },
     { "setbip69enabled", 0, "enabled" },
