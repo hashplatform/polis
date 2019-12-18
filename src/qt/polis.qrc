@@ -4,7 +4,7 @@
         <file alias="prompticon">res/icons/chevron.png</file>
         <file alias="warning">res/icons/warning.png</file>
     </qresource>
-    <qresource prefix="/icons/light">
+    <qresource prefix="/icons">
         <file alias="address-book">res/icons/address-book.png</file>
         <file alias="quit">res/icons/quit.png</file>
         <file alias="send">res/icons/send.png</file>
