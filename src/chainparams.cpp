@@ -434,29 +434,29 @@ public:
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 4032;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 3226;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 50;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 40;
 
             // Deployment of BIP147
             consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].bit = 2;
             consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
             consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
-            consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nWindowSize = 4032;
-            consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nThreshold = 3226;
+            consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nWindowSize = 50;
+            consensus.vDeployments[Consensus::DEPLOYMENT_BIP147].nThreshold = 40;
 
             // Deployment of DIP0003
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].bit = 3;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nWindowSize = 4032;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nThreshold = 3226;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nWindowSize = 50;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0003].nThreshold = 40;
 
             // Deployment of DIP0008
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].bit = 4;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nWindowSize = 4032;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 3226;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nWindowSize = 50;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 40;
 
             // The best chain should have at least this much work.
             consensus.nMinimumChainWork = uint256S("0000000000000000000000000000000000000000000000000000000000000000");
