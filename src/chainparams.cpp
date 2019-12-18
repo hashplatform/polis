@@ -453,8 +453,8 @@ public:
 
             // Deployment of DIP0008
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].bit = 4;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = NEVER32;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = NEVER32;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nWindowSize = 4032;
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 3226;
 
