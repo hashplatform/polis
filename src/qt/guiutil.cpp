@@ -911,7 +911,7 @@ QString loadStyleSheet()
     QString theme = settings.value("theme", "").toString();
 
     if(!theme.isEmpty()){
-        cssName = QString(":/css/") + theme;
+        cssName = QString(":/css/default");
     }
     else {
         cssName = QString(":/css/default");
