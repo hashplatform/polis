@@ -259,8 +259,8 @@ public:
     
             // Deployment of DIP0008
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].bit = 4;
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = 1571875200; // 24/10/2019
-            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = 1579759200;   // + 3months
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nStartTime = 1576947018; // 21/12/2019
+            consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nTimeout = 1581465600;   // 02/12/2020
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nWindowSize = 500;       // 500 hosts
             consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 200;        // 40% of 500 hosts
 
