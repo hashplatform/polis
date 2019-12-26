@@ -29,6 +29,7 @@ packages:
   - "libtool"
   - "automake"
   - "faketime"
+  - "cmake"
   - "bsdmainutils"
   - "ca-certificates"
   - "python3"
