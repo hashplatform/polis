@@ -494,6 +494,7 @@ libpolis_util_a_SOURCES = \
   bls/bls_ies.h \
   bls/bls_worker.cpp \
   bls/bls_worker.h \
+  bls/bls_batchverifier.h \
   support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
