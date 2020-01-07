@@ -590,4 +590,6 @@ bool LoadMempool();
 //! Return the minimum staking age appropriate to where we are in the chain
 int CurrentMinStakeAge(int nTimePeriod);
 
+bool FullDIP0003Mode();
+
 #endif // BITCOIN_VALIDATION_H

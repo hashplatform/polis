@@ -201,7 +201,7 @@ public:
             consensus.BIP66Height = 245817; // 00000000000b1fa2dfa312863570e13fae9ca7b5566cb27e55422620b469aefa
             consensus.DIP0001Height = 12096;
             consensus.DIP0003Height = 453000;
-            consensus.DIP0003EnforcementHeight = NEVER32;
+            consensus.DIP0003EnforcementHeight = 521440; // est 19/01/2020
             consensus.DIP0003EnforcementHash = uint256();
             consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
             consensus.nPowTargetTimespan = 24 * 60 * 60; // polis: 1 day
