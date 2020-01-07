@@ -372,6 +372,9 @@ bool CMasternodePayments::GetBlockTxOuts(int nBlockHeight, CAmount blockReward, 
 // -- Only look ahead up to 8 blocks to allow for propagation of the latest 2 blocks of votes
 bool CMasternodePayments::IsScheduled(const CDeterministicMNCPtr& dmnIn, int nNotBlockHeight) const
 {
+    // can't verify historical blocks here
+    if (!FullDIP0003Mode()) return true;
+
     auto projectedPayees = deterministicMNManager->GetListAtChainTip().GetProjectedMNPayees(8);
     for (const auto &dmn : projectedPayees) {
         if (dmn->proTxHash == dmnIn->proTxHash) {
@@ -383,11 +386,6 @@ bool CMasternodePayments::IsScheduled(const CDeterministicMNCPtr& dmnIn, int nNo
 
 bool CMasternodePayments::IsTransactionValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward) const
 {
-    if (!deterministicMNManager->IsDIP3Enforced(nBlockHeight)) {
-        // can't verify historical blocks here
-        return true;
-    }
-
     std::vector<CTxOut> voutMasternodePayments;
     if (!GetBlockTxOuts(nBlockHeight, blockReward, voutMasternodePayments)) {
         LogPrintf("CMasternodePayments::%s -- ERROR failed to get payees for block at height %s\n", __func__, nBlockHeight);

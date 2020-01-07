@@ -4932,6 +4932,11 @@ int CurrentMinStakeAge(int nTimePeriod)
     return returnTime;
 }
 
+//! Returns whether full DIP3 enforcement is active
+bool FullDIP0003Mode() {
+    return (chainActive.Height() > Params().GetConsensus().DIP0003EnforcementHeight);
+}
+
 class CMainCleanup
 {
 public:
