@@ -364,7 +364,7 @@ void BitcoinGUI::createActions()
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
     }
-    if (!fLiteMode && settings.value("fShowGovernanceTab").toBool()) {
+    {
         governanceAction = new QAction(QIcon(":/icons/governance"), tr("&Governance"), this);
         governanceAction->setStatusTip(tr("Show governance items"));
         governanceAction->setToolTip(governanceAction->statusTip());
@@ -586,10 +586,7 @@ void BitcoinGUI::createToolBars()
         {
             toolbar->addAction(masternodeAction);
         }
-        if (!fLiteMode && settings.value("fShowGovernanceTab").toBool() && governanceAction)
-        {
-            toolbar->addAction(governanceAction);
-        }
+        toolbar->addAction(governanceAction);
         toolbar->setMovable(false); // remove unused icon in upper left corner
         overviewAction->setChecked(true);
 
@@ -738,9 +735,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     if (!fLiteMode && settings.value("fShowMasternodesTab").toBool() && masternodeAction) {
         masternodeAction->setEnabled(enabled);
     }
-    if (!fLiteMode && settings.value("fShowMasternodesTab").toBool() && governanceAction) {
-        governanceAction->setEnabled(enabled);
-    }
+    governanceAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
@@ -912,11 +907,8 @@ void BitcoinGUI::gotoMasternodePage()
 
 void BitcoinGUI::gotoGovernancePage()
 {
-    QSettings settings;
-    if (!fLiteMode && settings.value("fShowGovernanceTab").toBool() && governanceAction) {
-        governanceAction->setChecked(true);
-        if (walletFrame) walletFrame->gotoGovernancePage();
-    }
+    governanceAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoGovernancePage();
 }
 
 void BitcoinGUI::gotoReceiveCoinsPage()
