@@ -70,6 +70,14 @@ void GovernanceList::on_voteYesButton_clicked()
                                          QMessageBox::Yes | QMessageBox::Cancel,
                                          QMessageBox::Cancel);
     if(retval != QMessageBox::Yes) return;
+    WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
+    if(encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForMixingOnly) {
+        WalletModel::UnlockContext ctx(walletModel->requestUnlock());
+        if(!ctx.isValid()) return; // Unlock wallet was cancelled
+        vote_outcome_enum_t VoteValue = vote_outcome_enum_t(1);
+        Vote(parsedGobjectHash, VoteValue);
+        return;
+    }
     vote_outcome_enum_t VoteValue = vote_outcome_enum_t(1);
     Vote(parsedGobjectHash, VoteValue);
 }
@@ -95,6 +103,14 @@ void GovernanceList::on_voteNoButton_clicked()
                                          QMessageBox::Yes | QMessageBox::Cancel,
                                          QMessageBox::Cancel);
     if(retval != QMessageBox::Yes) return;
+    WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
+    if(encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForMixingOnly) {
+        WalletModel::UnlockContext ctx(walletModel->requestUnlock());
+        if(!ctx.isValid()) return; // Unlock wallet was cancelled
+        vote_outcome_enum_t VoteValue = vote_outcome_enum_t(2);
+        Vote(parsedGobjectHash, VoteValue);
+        return;
+    }
     vote_outcome_enum_t VoteValue = vote_outcome_enum_t(2);
     Vote(parsedGobjectHash, VoteValue);
 }
@@ -121,6 +137,14 @@ void GovernanceList::on_voteAbstainButton_clicked()
                                          QMessageBox::Yes | QMessageBox::Cancel,
                                          QMessageBox::Cancel);
     if(retval != QMessageBox::Yes) return;
+    WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
+    if(encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForMixingOnly) {
+        WalletModel::UnlockContext ctx(walletModel->requestUnlock());
+        if(!ctx.isValid()) return; // Unlock wallet was cancelled
+        vote_outcome_enum_t VoteValue = vote_outcome_enum_t(3);
+        Vote(parsedGobjectHash, VoteValue);
+        return;
+    }
     vote_outcome_enum_t VoteValue = vote_outcome_enum_t(3);
     Vote(parsedGobjectHash, VoteValue);
 }
