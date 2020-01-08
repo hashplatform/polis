@@ -225,7 +225,7 @@ bool CWallet::CreateCoinStakeKernel(CScript &kernelScript, const CScript &stakeS
         return false;
     for(unsigned int i = 0; i < nHashDrift; ++i)
     {
-        nTryTime = nTimeTx + nHashDrift - i;
+        nTryTime = nTimeTx - i;
         bool fValid = CheckStakeKernelHash(nBits, blockFrom, nTxPrevOffset, txPrev, prevout, nTryTime, hashProofOfStake);
         if (fDebug)
             LogPrintf("%04x %s\n", i, hashProofOfStake.ToString().c_str());
