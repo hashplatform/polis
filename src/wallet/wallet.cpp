@@ -4003,7 +4003,7 @@ bool CWallet::CreateCoinStake(unsigned int nBits,
         return error("CreateCoinStake() : No Coins to stake");
     //prevent staking a time that won't be accepted
     if (GetAdjustedTime() <= chainActive.Tip()->nTime)
-        MilliSleep(10000);
+        return false;
     bool fKernelFound = false;
     CAmount nCredit = 0;
 
