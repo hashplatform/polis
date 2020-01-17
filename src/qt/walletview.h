@@ -13,6 +13,7 @@
 
 class BitcoinGUI;
 class ClientModel;
+class GovernancePage;
 class OverviewPage;
 class PlatformStyle;
 class ReceiveCoinsDialog;

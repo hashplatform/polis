@@ -197,10 +197,10 @@ class TestManager(object):
             return all(node.verack_received for node in self.test_nodes)
         return wait_until(veracked, timeout=10)
 
-    def wait_for_pings(self, counter):
+    def wait_for_pings(self, counter, timeout=float('inf')):
         def received_pongs():
             return all(node.received_ping_response(counter) for node in self.test_nodes)
-        return wait_until(received_pongs)
+        return wait_until(received_pongs, timeout=timeout)
 
     # sync_blocks: Wait for all connections to request the blockhash given
     # then send get_headers to find out the tip of each node, and synchronize
@@ -214,7 +214,6 @@ class TestManager(object):
 
         # --> error if not requested
         if not wait_until(blocks_requested, attempts=20*num_blocks, sleep=0.1):
-            # print [ c.cb.block_request_map for c in self.connections ]
             raise AssertionError("Not all nodes requested block")
 
         # Send getheaders message
@@ -222,7 +221,7 @@ class TestManager(object):
 
         # Send ping and wait for response -- synchronization hack
         [ c.cb.send_ping(self.ping_counter) for c in self.connections ]
-        self.wait_for_pings(self.ping_counter)
+        self.wait_for_pings(self.ping_counter, timeout=300)
         self.ping_counter += 1
 
     # Analogous to sync_block (see above)
@@ -236,7 +235,6 @@ class TestManager(object):
 
         # --> error if not requested
         if not wait_until(transaction_requested, attempts=20*num_events):
-            # print [ c.cb.tx_request_map for c in self.connections ]
             raise AssertionError("Not all nodes requested transaction")
 
         # Get the mempool
@@ -263,13 +261,12 @@ class TestManager(object):
                     if c.cb.bestblockhash == blockhash:
                         return False
                     if blockhash not in c.cb.block_reject_map:
-                        print('Block not in reject map: %064x' % (blockhash))
+                        logger.error('Block not in reject map: %064x' % (blockhash))
                         return False
                     if not outcome.match(c.cb.block_reject_map[blockhash]):
-                        print('Block rejected with %s instead of expected %s: %064x' % (c.cb.block_reject_map[blockhash], outcome, blockhash))
+                        logger.error('Block rejected with %s instead of expected %s: %064x' % (c.cb.block_reject_map[blockhash], outcome, blockhash))
                         return False
                 elif ((c.cb.bestblockhash == blockhash) != outcome):
-                    # print c.cb.bestblockhash, blockhash, outcome
                     return False
             return True
 
@@ -285,19 +282,17 @@ class TestManager(object):
                 if outcome is None:
                     # Make sure the mempools agree with each other
                     if c.cb.lastInv != self.connections[0].cb.lastInv:
-                        # print c.rpc.getrawmempool()
                         return False
                 elif isinstance(outcome, RejectResult): # Check that tx was rejected w/ code
                     if txhash in c.cb.lastInv:
                         return False
                     if txhash not in c.cb.tx_reject_map:
-                        print('Tx not in reject map: %064x' % (txhash))
+                        logger.error('Tx not in reject map: %064x' % (txhash))
                         return False
                     if not outcome.match(c.cb.tx_reject_map[txhash]):
-                        print('Tx rejected with %s instead of expected %s: %064x' % (c.cb.tx_reject_map[txhash], outcome, txhash))
+                        logger.error('Tx rejected with %s instead of expected %s: %064x' % (c.cb.tx_reject_map[txhash], outcome, txhash))
                         return False
                 elif ((txhash in c.cb.lastInv) != outcome):
-                    # print c.rpc.getrawmempool(), c.cb.lastInv
                     return False
             return True
 
@@ -358,12 +353,13 @@ class TestManager(object):
                         else:
                             [ c.send_message(msg_block(block)) for c in self.connections ]
                             [ c.cb.send_ping(self.ping_counter) for c in self.connections ]
-                            self.wait_for_pings(self.ping_counter)
+                            self.wait_for_pings(self.ping_counter, timeout=300)
                             self.ping_counter += 1
                         if (not self.check_results(tip, outcome)):
                             raise AssertionError("Test failed at test %d" % test_number)
                     else:
-                        invqueue.append(CInv(2, block.sha256))
+                        block_header = CBlockHeader(block)
+                        [ c.cb.send_header(block_header) for c in self.connections ]
                 elif isinstance(b_or_t, CBlockHeader):
                     block_header = b_or_t
                     self.block_store.add_header(block_header)
@@ -407,7 +403,7 @@ class TestManager(object):
                 if (not self.check_mempool(tx.sha256, tx_outcome)):
                     raise AssertionError("Mempool test failed at test %d" % test_number)
 
-            print("Test %d: PASS" % test_number, [ c.rpc.getblockcount() for c in self.connections ])
+            logger.info("Test %d: PASS" % test_number)
             test_number += 1
 
         [ c.disconnect_node() for c in self.connections ]

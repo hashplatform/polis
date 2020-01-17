@@ -30,6 +30,16 @@
     </message>
     <message>
         <location line="+10"/>
+        <source>Show QR code for the currently selected address</source>
+        <translation>Show QR code for the currently selected address</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Show QR code</source>
+        <translation>&amp;Show QR code</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Delete the currently selected address from the list</translation>
     </message>
@@ -54,7 +64,7 @@
         <translation>C&amp;lose</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="+51"/>
+        <location filename="../addressbookpage.cpp" line="+54"/>
         <source>Choose the address to send coins to</source>
         <translation>Choose the address to send coins to</translation>
     </message>
@@ -104,7 +114,17 @@
         <translation>&amp;Edit</translation>
     </message>
     <message>
-        <location line="+193"/>
+        <location line="+1"/>
+        <source>&amp;Show address QR code</source>
+        <translation>&amp;Show address QR code</translation>
+    </message>
+    <message>
+        <location line="+148"/>
+        <source>QR code</source>
+        <translation>QR code</translation>
+    </message>
+    <message>
+        <location line="+66"/>
         <source>Export Address List</source>
         <translation>Export Address List</translation>
     </message>
@@ -558,16 +578,6 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Open &amp;Masternode Configuration File</source>
-        <translation>Open &amp;Masternode Configuration File</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Open Masternode configuration file</source>
-        <translation>Open Masternode configuration file</translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Show Automatic &amp;Backups</source>
         <translation>Show Automatic &amp;Backups</translation>
     </message>
@@ -617,12 +627,12 @@
         <translation>Show the %1 help message to get a list with possible Polis command-line options</translation>
     </message>
     <message>
-        <location line="+290"/>
+        <location line="+288"/>
         <source>%1 client</source>
         <translation>%1 client</translation>
     </message>
     <message>
-        <location line="-288"/>
+        <location line="-286"/>
         <source>&amp;PrivateSend information</source>
         <translation>&amp;PrivateSend information</translation>
     </message>
@@ -632,7 +642,7 @@
         <translation>Show the PrivateSend basic information</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+61"/>
         <source>&amp;File</source>
         <translation>&amp;File</translation>
     </message>
@@ -647,7 +657,7 @@
         <translation>&amp;Tools</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
@@ -826,12 +836,7 @@
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+86"/>
-        <source>Total: %1 (PS compatible: %2 / Enabled: %3)</source>
-        <translation>Total: %1 (PS compatible: %2 / Enabled: %3)</translation>
-    </message>
-    <message>
-        <location line="+126"/>
+        <location filename="../clientmodel.cpp" line="+203"/>
         <source>Network Alert</source>
         <translation>Network Alert</translation>
     </message>
@@ -1015,7 +1020,7 @@
         <translation>(%1 locked)</translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+159"/>
         <source>yes</source>
         <translation>yes</translation>
     </message>
@@ -1342,7 +1347,27 @@
         <translation>Use a custom data directory:</translation>
     </message>
     <message>
-        <location filename="../intro.cpp" line="+96"/>
+        <location filename="../intro.cpp" line="+26"/>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>At least %1 GB of data will be stored in this directory, and it will grow over time.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Approximately %1 GB of data will be stored in this directory.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>%1 will download and store a copy of the Dash block chain.</source>
+        <translation>%1 will download and store a copy of the Dash block chain.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>The wallet will also be stored in this directory.</translation>
+    </message>
+    <message>
+        <location line="+73"/>
         <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
         <translation>Error: Specified data directory &quot;%1&quot; cannot be created.</translation>
     </message>
@@ -2719,7 +2744,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>&amp;Save Image...</translation>
     </message>
     <message>
-        <location filename="../qrdialog.cpp" line="+149"/>
+        <location filename="../qrdialog.cpp" line="+153"/>
         <source>Error creating QR Code.</source>
         <translation>Error creating QR Code.</translation>
     </message>
@@ -2727,7 +2752,7 @@ https://www.transifex.com/projects/p/polis/</translation>
 <context>
     <name>QRGeneralImageWidget</name>
     <message>
-        <location line="-113"/>
+        <location line="-117"/>
         <source>&amp;Save Image...</source>
         <translation>&amp;Save Image...</translation>
     </message>
@@ -2946,7 +2971,7 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <location line="+62"/>
         <location filename="../rpcconsole.cpp" line="+484"/>
-        <location line="+788"/>
+        <location line="+795"/>
         <source>Select a peer to view detailed information.</source>
         <translation>Select a peer to view detailed information.</translation>
     </message>
@@ -3137,7 +3162,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>-reindex: Rebuild block chain index from current blk000??.dat files.</translation>
     </message>
     <message>
-        <location filename="../rpcconsole.cpp" line="-692"/>
+        <location filename="../rpcconsole.cpp" line="-699"/>
         <source>&amp;Disconnect</source>
         <translation>&amp;Disconnect</translation>
     </message>
@@ -3210,7 +3235,12 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Network activity disabled</translation>
     </message>
     <message>
-        <location line="+153"/>
+        <location line="+33"/>
+        <source>Total: %1 (Enabled: %2)</source>
+        <translation>Total: %1 (Enabled: %2)</translation>
+    </message>
+    <message>
+        <location line="+127"/>
         <source>%1 B</source>
         <translation>%1 B</translation>
     </message>
@@ -4265,7 +4295,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>conflicted</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>%1/offline</source>
         <translation>%1/offline</translation>
     </message>
@@ -4300,7 +4330,17 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>%1 confirmations</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
+        <source>locked via LLMQ based ChainLocks</source>
+        <translation>locked via LLMQ based ChainLocks</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>verified via LLMQ based InstantSend</source>
+        <translation>verified via LLMQ based InstantSend</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>verified via InstantSend</source>
         <translation>verified via InstantSend</translation>
     </message>
@@ -4903,7 +4943,12 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>The transaction history was successfully saved to %1.</translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location line="+143"/>
+        <source>QR code</source>
+        <translation>QR code</translation>
+    </message>
+    <message>
+        <location line="+43"/>
         <source>Range:</source>
         <translation>Range:</translation>
     </message>
@@ -5117,7 +5162,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Corrupted block database detected</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Debugging/Testing options:</source>
         <translation>Debugging/Testing options:</translation>
     </message>
@@ -5212,12 +5257,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
-        <translation>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+14"/>
         <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
         <translation>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</translation>
     </message>
@@ -5538,11 +5578,6 @@ https://www.transifex.com/projects/p/polis/</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Port: %d</source>
-        <translation>Port: %d</translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Prepend debug output with timestamp (default: %u)</source>
         <translation>Prepend debug output with timestamp (default: %u)</translation>
     </message>
@@ -5588,11 +5623,6 @@ https://www.transifex.com/projects/p/polis/</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Specify masternode configuration file (default: %s)</source>
-        <translation>Specify masternode configuration file (default: %s)</translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Specify pid file (default: %s)</source>
         <translation>Specify pid file (default: %s)</translation>
     </message>
@@ -5602,24 +5632,9 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Spend unconfirmed change when sending transactions (default: %u)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Submitted following entries to masternode: %u / %d</source>
-        <translation>Submitted following entries to masternode: %u / %d</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Submitted to masternode, waiting for more entries ( %u / %d ) %s</source>
-        <translation>Submitted to masternode, waiting for more entries ( %u / %d ) %s</translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Submitted to masternode, waiting in queue %s</source>
         <translation>Submitted to masternode, waiting in queue %s</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Synchroning blockchain...</source>
-        <translation>Synchroning blockchain...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5632,12 +5647,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Synchronization finished</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Synchronizing masternodes...</source>
-        <translation>Synchronizing masternodes...</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>This is not a Masternode.</source>
         <translation>This is not a Masternode.</translation>
     </message>
@@ -5937,7 +5947,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Wallet is locked, can&apos;t replenish keypool! Automatic backups and mixing are disabled, please unlock your wallet to replenish keypool.</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+9"/>
         <source>Warning: Unknown block versions being mined! It&apos;s possible unknown rules are in effect</source>
         <translation>Warning: Unknown block versions being mined! It&apos;s possible unknown rules are in effect</translation>
     </message>
@@ -5987,7 +5997,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Automatically create Tor hidden service (default: %d)</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+21"/>
         <source>ERROR! Failed to create automatic backup</source>
         <translation>ERROR! Failed to create automatic backup</translation>
     </message>
@@ -6122,14 +6132,9 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Location of the auth cookie (default: data dir)</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Make the wallet broadcast transactions</source>
         <translation>Make the wallet broadcast transactions</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Masternode cache is empty, skipping payments and governance cache...</source>
-        <translation>Masternode cache is empty, skipping payments and governance cache...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -6207,7 +6212,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Password for JSON-RPC connections</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>Print version and exit</source>
         <translation>Print version and exit</translation>
     </message>
@@ -6362,7 +6367,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Accept connections from outside (default: 1 if no -proxy or -connect/-noconnect)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+22"/>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
         <translation>Cannot obtain a lock on data directory %s. %s is probably already running.</translation>
     </message>
@@ -6482,17 +6487,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Wallet will not create transactions that violate mempool chain limits (default: %u)</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Warning: At least %d of %d masternodes are running on a newer software version. Please check latest releases, you might need to update too.</source>
-        <translation>Warning: At least %d of %d masternodes are running on a newer software version. Please check latest releases, you might need to update too.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Warning: Every masternode (out of %d known ones) is running on a newer software version. Please check latest releases, it&apos;s very likely that you missed a major/critical update.</source>
-        <translation>Warning: Every masternode (out of %d known ones) is running on a newer software version. Please check latest releases, it&apos;s very likely that you missed a major/critical update.</translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
         <translation>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</translation>
     </message>
@@ -6517,7 +6512,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>%s is set very high!</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
         <source>(press q to shutdown and continue later)</source>
         <translation>(press q to shutdown and continue later)</translation>
     </message>
@@ -6537,7 +6532,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>-rpcport must be specified when -devnet and -server are specified</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Allow RFC1918 addresses to be relayed and connected to (default: %u)</source>
         <translation>Allow RFC1918 addresses to be relayed and connected to (default: %u)</translation>
     </message>
@@ -6697,7 +6692,7 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Specify data directory</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Specify wallet file (within data directory)</source>
         <translation>Specify wallet file (within data directory)</translation>
     </message>
@@ -6712,22 +6707,17 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Starting network threads...</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Synchronization pending...</source>
         <translation>Synchronization pending...</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Synchronizing governance objects...</source>
         <translation>Synchronizing governance objects...</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Synchronizing masternode payments...</source>
-        <translation>Synchronizing masternode payments...</translation>
-    </message>
-    <message>
-        <location line="+2"/>
         <source>The source code is available from %s.</source>
         <translation>The source code is available from %s.</translation>
     </message>

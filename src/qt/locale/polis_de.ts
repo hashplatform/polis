@@ -22,6 +22,14 @@
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
+        <source>Show QR code for the currently selected address</source>
+        <translation>QR Code für selektierte Adresse anzeigen</translation>
+    </message>
+    <message>
+        <source>&amp;Show QR code</source>
+        <translation>&amp;QR Code anzeigen</translation>
+    </message>
+    <message>
         <source>Delete the currently selected address from the list</source>
         <translation>Ausgewählte Adresse aus der Liste entfernen</translation>
     </message>
@@ -80,6 +88,14 @@
     <message>
         <source>&amp;Edit</source>
         <translation>&amp;Editieren</translation>
+    </message>
+    <message>
+        <source>&amp;Show address QR code</source>
+        <translation>&amp;QR Code für Adresse anzeigen</translation>
+    </message>
+    <message>
+        <source>QR code</source>
+        <translation>QR Code</translation>
     </message>
     <message>
         <source>Export Address List</source>
@@ -438,14 +454,6 @@
         <translation>Konfigurationsdatei öffnen</translation>
     </message>
     <message>
-        <source>Open &amp;Masternode Configuration File</source>
-        <translation>&amp;Masternode Konfigurationsdatei öffnen</translation>
-    </message>
-    <message>
-        <source>Open Masternode configuration file</source>
-        <translation>Masternode Konfigurationsdatei öffnen</translation>
-    </message>
-    <message>
         <source>Show Automatic &amp;Backups</source>
         <translation>Automatische &amp;Sicherheitskopien anzeigen</translation>
     </message>
@@ -650,10 +658,6 @@
 </context>
 <context>
     <name>ClientModel</name>
-    <message>
-        <source>Total: %1 (PS compatible: %2 / Enabled: %3)</source>
-        <translation>Gesamt: %1 (DS kompatibel: %2 / Aktiviert: %3)</translation>
-    </message>
     <message>
         <source>Network Alert</source>
         <translation>Netzwerkalarm</translation>
@@ -1070,6 +1074,22 @@ Der Mixing-Prozeß läuft nach dem Start vollständig im Hintergrund, d.h. es is
         <translation>Ein benutzerdefiniertes Datenverzeichnis verwenden:</translation>
     </message>
     <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>Es werden mindestens %1 GB Daten in diesem Verzeichnis gespeichert, wobei dies mit der Zeit stetig mehr wird.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Etwa %1 GB Daten werden in diesem Verzeichnis gespeichert.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Dash block chain.</source>
+        <translation>%1 wird eine Kopie der Dash Blockchain herunterladen und speichern.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>Die Wallet wird ebenso in diesem Verzeichnis gespeichert werden.</translation>
+    </message>
+    <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
         <translation>Fehler: Angegebenes Datenverzeichnis "%1" kann nicht angelegt werden.</translation>
     </message>
@@ -1093,76 +1113,20 @@ Der Mixing-Prozeß läuft nach dem Start vollständig im Hintergrund, d.h. es is
         <translation>Formular</translation>
     </message>
     <message>
-        <source>My Masternodes</source>
-        <translation>Meine Masternodes</translation>
-    </message>
-    <message>
-        <source>Note: Status of your masternodes in local wallet can potentially be slightly incorrect.&lt;br /&gt;Always wait for wallet to sync additional data and then double check from another node&lt;br /&gt;if your masternode should be running but you still do not see "ENABLED" in "Status" field.</source>
-        <translation>Achtung: der Status Ihrer Masternodes kann während des Synchronisationsvorgangs zeitweilig falsch angezeigt werden&lt;br /&gt; Daher sollten Sie immer das Ende des Synchronisationsvorgangs abwarten, und falls Ihr Masternode nicht den Status "ENABLED" hat &lt;br /&gt; im Zweifelsfalle den Status von einer anderen Geldbörse aus überprüfen.</translation>
-    </message>
-    <message>
-        <source>Alias</source>
-        <translation>Alias-Name</translation>
-    </message>
-    <message>
         <source>Address</source>
         <translation>Adresse</translation>
-    </message>
-    <message>
-        <source>Protocol</source>
-        <translation>Protokoll</translation>
     </message>
     <message>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <source>Active</source>
-        <translation>Aktiv</translation>
-    </message>
-    <message>
-        <source>Last Seen</source>
-        <translation>Zuletzt gesehen</translation>
-    </message>
-    <message>
         <source>Payee</source>
         <translation>Empfänger</translation>
     </message>
     <message>
-        <source>S&amp;tart alias</source>
-        <translation>Alias-Namen s&amp;tarten</translation>
-    </message>
-    <message>
-        <source>Start &amp;all</source>
-        <translation>Alle st&amp;arten</translation>
-    </message>
-    <message>
-        <source>Start &amp;MISSING</source>
-        <translation>&amp;Fehlende starten</translation>
-    </message>
-    <message>
-        <source>&amp;Update status</source>
-        <translation>Stat&amp;us aktualisieren</translation>
-    </message>
-    <message>
-        <source>Show additional Masternode information</source>
-        <translation>Zusätzliche Masternode-Informationen anzeigen</translation>
-    </message>
-    <message>
-        <source>Show &amp;Info...</source>
-        <translation>Zeige &amp;Info...</translation>
-    </message>
-    <message>
-        <source>Status will be updated automatically in (sec):</source>
-        <translation>Status wird automatisch aktualisiert in (Sek.):</translation>
-    </message>
-    <message>
         <source>0</source>
         <translation>0</translation>
-    </message>
-    <message>
-        <source>All Masternodes</source>
-        <translation>Alle Masternodes</translation>
     </message>
     <message>
         <source>Filter List:</source>
@@ -2478,6 +2442,10 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Netzwerk-Aktivität deaktiviert</translation>
     </message>
     <message>
+        <source>Total: %1 (Enabled: %2)</source>
+        <translation>Insgesamt: %1 (Aktiv: %2)</translation>
+    </message>
+    <message>
         <source>%1 B</source>
         <translation>%1 B</translation>
     </message>
@@ -3327,6 +3295,14 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>%1 Bestätigungen</translation>
     </message>
     <message>
+        <source>locked via LLMQ based ChainLocks</source>
+        <translation>durch LLMQ basierte ChainLocks bestätigt</translation>
+    </message>
+    <message>
+        <source>verified via LLMQ based InstantSend</source>
+        <translation>durch LLMQ basiertes InstantSend verifiziert</translation>
+    </message>
+    <message>
         <source>verified via InstantSend</source>
         <translation>überprüft durch InstantSend</translation>
     </message>
@@ -3740,6 +3716,10 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Transaktionsdetails anzeigen</translation>
     </message>
     <message>
+        <source>Show address QR code</source>
+        <translation>QR Code für Adresse anzeigen</translation>
+    </message>
+    <message>
         <source>Export Transaction History</source>
         <translation>Transaktionsverlauf exportieren</translation>
     </message>
@@ -3790,6 +3770,10 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>The transaction history was successfully saved to %1.</source>
         <translation>Speichern des Transaktionsverlaufs nach %1 war erfolgreich.</translation>
+    </message>
+    <message>
+        <source>QR code</source>
+        <translation>QR Code</translation>
     </message>
     <message>
         <source>Range:</source>
@@ -3915,10 +3899,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Warnung: Wir scheinen nicht vollständig mit unseren Gegenstellen übereinzustimmen! Sie oder die anderen Knoten müssen unter Umständen ihre Client-Software aktualisieren.</translation>
     </message>
     <message>
-        <source>You must specify a masternodeprivkey in the configuration. Please see documentation for help.</source>
-        <translation>Es muss ein Masternode-Geheimschlüssel (masternodeprivkey) in der Konfiguration angegeben werden. Für weitere Informationen siehe Dokumentation.</translation>
-    </message>
-    <message>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Kommandozeilen- und JSON-RPC-Befehle annehmen</translation>
     </message>
@@ -4039,10 +4019,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>An die angegebene Adresse binden und Gegenstellen in die Liste der erlaubten Gegenstellen aufnehmen. Für IPv6 "[Host]:Port"-Schreibweise verwenden</translation>
     </message>
     <message>
-        <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
-        <translation>Für JSON-RPC Verbindugen an die angegebene Adresse binden. Für IPv6 "[Host]:Port"-Schreibweise verwenden. Diese Option kann mehrmals eingetragen werden. (Standard: an alle verbinden)</translation>
-    </message>
-    <message>
         <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
         <translation>Neue Dateien mit den System-Standardberechtigungen (anstatt 077) erzeugen (nur bei deaktiviertem Wallet möglich)</translation>
     </message>
@@ -4119,6 +4095,10 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>(Standard: %s)</translation>
     </message>
     <message>
+        <source>-wallet parameter must only specify a filename (not a path)</source>
+        <translation>-wallet parameter darf nur den Dateinamen angeben (nicht den Pfad)</translation>
+    </message>
+    <message>
         <source>Accept public REST requests (default: %u)</source>
         <translation>Akzeptiere öffentliche REST-Anforderungen (Standard: %u)</translation>
     </message>
@@ -4167,10 +4147,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Cache für Masternodes konnte nicht geladen werden aus</translation>
     </message>
     <message>
-        <source>Failed to load masternode payments cache from</source>
-        <translation>Cache für Masternode Zahlungen konnte nicht geladen werden aus</translation>
-    </message>
-    <message>
         <source>Found enough users, signing ( waiting %s )</source>
         <translation>Genug Partner gefunden, signiere ( warte %s )</translation>
     </message>
@@ -4215,14 +4191,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Unzureichender Kontostand.</translation>
     </message>
     <message>
-        <source>Invalid -onion address: '%s'</source>
-        <translation>Ungültige "-onion"-Adresse: '%s'</translation>
-    </message>
-    <message>
-        <source>Invalid -proxy address: '%s'</source>
-        <translation>Ungültige Adresse in -proxy: '%s'</translation>
-    </message>
-    <message>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
         <translation>Ungültiger Betrag für -paytxfee=&lt;amount&gt;: '%s' (Betrag muss mindestens %s sein)</translation>
     </message>
@@ -4251,16 +4219,8 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Lade Masternode-Cache...</translation>
     </message>
     <message>
-        <source>Loading masternode payment cache...</source>
-        <translation>Lade Masternode Zahlungs-Cache...</translation>
-    </message>
-    <message>
         <source>Lock is already in place.</source>
         <translation>Schon gesperrt.</translation>
-    </message>
-    <message>
-        <source>Lock masternodes from masternode configuration file (default: %u)</source>
-        <translation>Masternodes über Masternode-Konfiguration sperren (Standard: %u)</translation>
     </message>
     <message>
         <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
@@ -4299,10 +4259,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Verbinde nur zu Knoten des Netztyps &lt;net&gt; (ipv4, ipv6 oder onion)</translation>
     </message>
     <message>
-        <source>Port: %d</source>
-        <translation>Port: %d</translation>
-    </message>
-    <message>
         <source>Prepend debug output with timestamp (default: %u)</source>
         <translation>Debugausgaben einen Zeitstempel voranstellen (Standard: %u)</translation>
     </message>
@@ -4339,10 +4295,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Verbindungzeitüberschreitung in Millisekunden festlegen (Minimum: 1, Standard: %d)</translation>
     </message>
     <message>
-        <source>Specify masternode configuration file (default: %s)</source>
-        <translation>Konfigurationsdatei der Masternode-Einstellungen angeben (Standard: %s)</translation>
-    </message>
-    <message>
         <source>Specify pid file (default: %s)</source>
         <translation>pid-Datei angeben (Standard: %s)</translation>
     </message>
@@ -4351,20 +4303,8 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Unbestätigtes Wechselgeld beim Senden von Transaktionen ausgeben (Standard: %u)</translation>
     </message>
     <message>
-        <source>Submitted following entries to masternode: %u / %d</source>
-        <translation>Folgende Einträge wurden an Masternode gesendet: %u / %d</translation>
-    </message>
-    <message>
-        <source>Submitted to masternode, waiting for more entries ( %u / %d ) %s</source>
-        <translation>An Masternode gesendet, warte auf weitere Einträge ( %u / %d ) %s</translation>
-    </message>
-    <message>
         <source>Submitted to masternode, waiting in queue %s</source>
         <translation>An Masternode übermittelt, wartet in Warteschlange %s</translation>
-    </message>
-    <message>
-        <source>Synchroning blockchain...</source>
-        <translation>Synchronisiere Blockchain...</translation>
     </message>
     <message>
         <source>Synchronization failed</source>
@@ -4373,10 +4313,6 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>Synchronization finished</source>
         <translation>Synchronisation beendet</translation>
-    </message>
-    <message>
-        <source>Synchronizing masternodes...</source>
-        <translation>Synchronisiere Masternodes...</translation>
     </message>
     <message>
         <source>This is not a Masternode.</source>
@@ -4443,10 +4379,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Versuche erneut...</translation>
     </message>
     <message>
-        <source>Invalid masternodeprivkey. Please see documenation.</source>
-        <translation>Masternode-Geheimschlüssel (masternodeprivkey) ist ungültig. Siehe Dokumentation. </translation>
-    </message>
-    <message>
         <source>Can't find random Masternode.</source>
         <translation>Kann keinen zufällig ausgewählten Masternode finden</translation>
     </message>
@@ -4455,16 +4387,8 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Währen der Synchronisierung kann nicht gemixt werden.</translation>
     </message>
     <message>
-        <source>Could not parse masternode.conf</source>
-        <translation>masternode.conf konnte nicht analysiert werden</translation>
-    </message>
-    <message>
         <source>Invalid netmask specified in -whitelist: '%s'</source>
         <translation>Ungültige Netzmaske für -whitelist angegeben: '%s'</translation>
-    </message>
-    <message>
-        <source>Invalid port detected in masternode.conf</source>
-        <translation>Ungültige Portnummer in masternode.conf</translation>
     </message>
     <message>
         <source>Invalid script detected.</source>
@@ -4489,6 +4413,10 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
         <translation>Eigene IP-Adresse erkennen (Standard: 1, wenn -listen aktiv ist und nicht -externalip)</translation>
+    </message>
+    <message>
+        <source>Bind to given address to listen for JSON-RPC connections. This option is ignored unless -rpcallowip is also passed. Port is optional and overrides -rpcport. Use [host]:port notation for IPv6. This option can be specified multiple times (default: 127.0.0.1 and ::1 i.e., localhost, or if -rpcallowip has been specified, 0.0.0.0 and :: i.e., all addresses)</source>
+        <translation>An angegebene Adresse für JSON-RPC Verbindungen binden. Diese Option wird ignoriert, außer wenn -rpcallowip gesetzt ist. Der Port ist optional und überschreibt -rpcport. Up IPv6 zu nutzen, kann die [host]:port Notation genutzt werden. Diese Option kann mehrere male angegeben werden (Standard: 127.0.0.1, ::1 und localhost oder wenn -rpcallowip angegeben wurde, 0.0.0.0 und ::, also alle Adressen)</translation>
     </message>
     <message>
         <source>Do not keep transactions in the mempool longer than &lt;n&gt; hours (default: %u)</source>
@@ -4627,16 +4555,8 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Sie müssen die Datenbank mit Hilfe von -reindex neu aufbauen, um zurück in den nicht abgeschnittenen/pruned Modus zu gehen. Dies wird die gesamte Blockchain downloaden</translation>
     </message>
     <message>
-        <source>(%d could be used only on mainnet)</source>
-        <translation>(%d kann nur im Standardnetz benutzt werden)</translation>
-    </message>
-    <message>
         <source>(default: %u)</source>
         <translation>(Standard: %u)</translation>
-    </message>
-    <message>
-        <source>(must be %d for mainnet)</source>
-        <translation>(muß für Standardnetz %d sein)</translation>
     </message>
     <message>
         <source>-maxmempool must be at least %d MB</source>
@@ -4707,10 +4627,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Löschen einer alten Datensicherung ist fehlgeschlagen, Fehler: %s</translation>
     </message>
     <message>
-        <source>Failed to parse host:port string</source>
-        <translation>Die Eingabe für Rechnername:Port wird nicht verstanden</translation>
-    </message>
-    <message>
         <source>Fee (in %s/kB) to add to transactions you send (default: %s)</source>
         <translation>Gebühr (in %s/kB), die gesendeten Transaktionen hinzugefügt wird (Standard: %s)</translation>
     </message>
@@ -4769,10 +4685,6 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>Make the wallet broadcast transactions</source>
         <translation>Aktiviere die Übertragung von Transaktionen</translation>
-    </message>
-    <message>
-        <source>Masternode cache is empty, skipping payments and governance cache...</source>
-        <translation>Der Masternode-Cache ist leer, Lesen des Cache für Zahlungen und Governance wird übersprungen...</translation>
     </message>
     <message>
         <source>Masternode options:</source>
@@ -4869,6 +4781,18 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>Rescan the block chain for missing wallet transactions on startup</source>
         <translation>Blockkette erneut nach fehlenden Wallet-Transaktionen durchsuchen</translation>
+    </message>
+    <message>
+        <source>Submitted following entries to masternode: %u</source>
+        <translation>Folgende Einträge wurden an Masternode gesendet: %u</translation>
+    </message>
+    <message>
+        <source>Submitted to masternode, waiting for more entries ( %u ) %s</source>
+        <translation>An Masternode gesendet, warte auf weitere Einträge ( %u ) %s</translation>
+    </message>
+    <message>
+        <source>Synchronizing blockchain...</source>
+        <translation>Synchronisiere Blockchain...</translation>
     </message>
     <message>
         <source>The wallet will avoid paying less than the minimum relay fee.</source>
@@ -5055,14 +4979,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Das Wallet erzeugt keine Transaktionen, die das Mempool Chain Limit überschreiten (Standardeinstellung: %u)</translation>
     </message>
     <message>
-        <source>Warning: At least %d of %d masternodes are running on a newer software version. Please check latest releases, you might need to update too.</source>
-        <translation>Warnung: Mindestens %d von %d Masternodes verwenden eine neuere Version. Sieh dir die letzten Veröffentlichungen an und überprüfe, ob du ebenfalls updaten musst</translation>
-    </message>
-    <message>
-        <source>Warning: Every masternode (out of %d known ones) is running on a newer software version. Please check latest releases, it's very likely that you missed a major/critical update.</source>
-        <translation>Warnung: Alle Masternodes (von %d bekannten) verwenden eine neuere Version. Überprüfe bitte die letzten Veröffentlichungen, da du wahrscheinlich ein kritische Update übersehen hast.</translation>
-    </message>
-    <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
         <translation>Warnung: wallet beschädigt, Datenrettung erfolgreich! Original %s wurde als %s in %s gespeichert. Falls Ihr Kontostand oder Transaktionen nicht korrekt sind, sollten Sie von einer Datensicherung wiederherstellen.</translation>
     </message>
@@ -5147,8 +5063,20 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Initialisierungsplausibilitätsprüfung fehlgeschlagen. %s wird beendet.</translation>
     </message>
     <message>
+        <source>Invalid -onion address or hostname: '%s'</source>
+        <translation>Ungültige -onion Adresse oder ungültiger Hostname: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid -proxy address or hostname: '%s'</source>
+        <translation>Ungültige -proxy Adresse oder ungültiger Hostname: '%s'</translation>
+    </message>
+    <message>
         <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
         <translation>Ungültiger Betrag für -%s=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid characters in -wallet filename</source>
+        <translation>Ungültige Zeichen in -wallet Dateinamen</translation>
     </message>
     <message>
         <source>Invalid spork address specified with -sporkaddr</source>
@@ -5157,6 +5085,10 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>Keep N POLIS anonymized (%u-%u, default: %u)</source>
         <translation>Betrag welcher anonymisiert vorgehalten wird. (%u-%u, Voreinstellung: %u) </translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>Lade P2P-Adressen...</translation>
     </message>
     <message>
         <source>Print this help message and exit</source>
@@ -5207,10 +5139,6 @@ https://www.transifex.com/projects/p/polis/</translation>
         <translation>Maximale Blockgröße in Byte festlegen (Standard: %d)</translation>
     </message>
     <message>
-        <source>Set the masternode private key</source>
-        <translation>Privaten Masternode-Schlüssel setzen</translation>
-    </message>
-    <message>
         <source>Show all debugging options (usage: --help -help-debug)</source>
         <translation>Zeige alle Debuggingoptionen (Benutzung: --help -help-debug)</translation>
     </message>
@@ -5245,10 +5173,6 @@ https://www.transifex.com/projects/p/polis/</translation>
     <message>
         <source>Synchronizing governance objects...</source>
         <translation>Synchronisiere Governance Objekte...</translation>
-    </message>
-    <message>
-        <source>Synchronizing masternode payments...</source>
-        <translation>Synchronisiere Masternode-Zahlungen...</translation>
     </message>
     <message>
         <source>The source code is available from %s.</source>

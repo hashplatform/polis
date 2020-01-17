@@ -3,6 +3,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "activemasternode.h"
 #include "overviewpage.h"
 #include "ui_overviewpage.h"
 #include "bitcoinunits.h"
@@ -20,6 +21,8 @@
 #include "validation.h"
 #include "instantx.h"
 #include "masternode-sync.h"
+#include "privatesend-client.h"
+
 #include <QAbstractItemDelegate>
 #include <QPainter>
 #include <QSettings>
@@ -199,15 +202,6 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     ui->labelImmature->setVisible(showImmature || showWatchOnlyImmature);
     ui->labelImmatureText->setVisible(showImmature || showWatchOnlyImmature);
     ui->labelWatchImmature->setVisible(showWatchOnlyImmature); // show watch-only immature balance
-
-
-    static int cachedTxLocks = 0;
-
-    if(cachedTxLocks != nCompleteTXLocks){
-        cachedTxLocks = nCompleteTXLocks;
-        ui->listTransactions->update();
-
-    }
 }
 
 void OverviewPage::setBlockChainInfo(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers)
@@ -327,7 +321,7 @@ void OverviewPage::showOutOfSyncWarning(bool fShow)
         ui->labelStatus->setText(tr("<font color='darkgreen'>ready</font>") );
         // Transaction Status
         // Masternode List Status
-        if (masternodeSync.IsMasternodeListSynced()) {
+        if (masternodeSync.IsSynced()) {
             ui->labelMnList->setText(tr("<font color='darkgreen'>ready</font>") );
         } else if (masternodeSync.IsFailed()) {
             ui->labelMnList->setText(tr("<font color='darkred'>failed</font>") );

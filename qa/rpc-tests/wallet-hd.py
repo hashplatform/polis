@@ -13,9 +13,10 @@ class WalletHDTest(BitcoinTestFramework):
         super().__init__()
         self.setup_clean_chain = True
         self.num_nodes = 2
+        self.node_args = [['-usehd=0'], ['-usehd=1', '-keypool=0']]
 
     def setup_network(self):
-        self.nodes = start_nodes(2, self.options.tmpdir, [['-usehd=0'], ['-usehd=1', '-keypool=0']], redirect_stderr=True)
+        self.nodes = start_nodes(2, self.options.tmpdir, self.node_args, redirect_stderr=True)
         self.is_network_split = False
         connect_nodes_bi(self.nodes, 0, 1)
         self.is_network_split=False
@@ -76,7 +77,7 @@ class WalletHDTest(BitcoinTestFramework):
         self.sync_all()
         assert_equal(self.nodes[1].getbalance(), num_hd_adds + 1)
 
-        print("Restore backup ...")
+        self.log.info("Restore backup ...")
         stop_node(self.nodes[1],1)
         os.remove(self.options.tmpdir + "/node1/regtest/wallet.dat")
         shutil.copyfile(tmpdir + "/hd.bak", tmpdir + "/node1/regtest/wallet.dat")

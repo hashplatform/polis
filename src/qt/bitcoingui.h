@@ -19,6 +19,10 @@
 #include <QPushButton>
 #include <QSystemTrayIcon>
 
+#ifdef Q_OS_MAC
+#include <qt/macos_appnap.h>
+#endif
+
 class ClientModel;
 class NetworkStyle;
 class Notificator;
@@ -31,7 +35,6 @@ class WalletFrame;
 class WalletModel;
 class HelpMessageDialog;
 class ModalOverlay;
-class MasternodeList;
 
 class CWallet;
 
@@ -123,7 +126,6 @@ private:
     QAction *openPeersAction;
     QAction *openRepairAction;
     QAction *openConfEditorAction;
-    QAction *openMNConfEditorAction;
     QAction *showBackupsAction;
     QAction *openAction;
     QAction *showHelpMessageAction;
@@ -136,6 +138,10 @@ private:
     RPCConsole *rpcConsole;
     HelpMessageDialog *helpMessageDialog;
     ModalOverlay *modalOverlay;
+
+#ifdef Q_OS_MAC
+    CAppNapInhibitor* m_app_nap_inhibitor = nullptr;
+#endif
 
     /** Keep track of previous number of blocks, to detect progress */
     int prevBlocks;
@@ -253,8 +259,6 @@ private Q_SLOTS:
 
     /** Open external (default) editor with polis.conf */
     void showConfEditor();
-    /** Open external (default) editor with masternode.conf */
-    void showMNConfEditor();
     /** Show folder with wallet backups in default file browser */
     void showBackups();
 
