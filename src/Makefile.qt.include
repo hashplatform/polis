@@ -9,6 +9,7 @@ EXTRA_LIBRARIES += qt/libpolisqt.a
 
 # polis qt core #
 QT_TS = \
+  qt/locale/polis_ar.ts \
   qt/locale/polis_bg.ts \
   qt/locale/polis_de.ts \
   qt/locale/polis_en.ts \
@@ -17,6 +18,7 @@ QT_TS = \
   qt/locale/polis_fr.ts \
   qt/locale/polis_it.ts \
   qt/locale/polis_ja.ts \
+  qt/locale/polis_ko.ts \
   qt/locale/polis_nl.ts \
   qt/locale/polis_pl.ts \
   qt/locale/polis_pt.ts \
@@ -24,6 +26,7 @@ QT_TS = \
   qt/locale/polis_ru.ts \
   qt/locale/polis_sk.ts \
   qt/locale/polis_sv.ts \
+  qt/locale/polis_th.ts \
   qt/locale/polis_vi.ts \
   qt/locale/polis_zh_CN.ts \
   qt/locale/polis_zh_TW.ts
@@ -379,7 +382,7 @@ endif
 qt_polis_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) \
   $(BACKTRACE_LIB) $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
-qt_polis_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_polis_qt_LDFLAGS =  $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 qt_polis_qt_LIBTOOLFLAGS = --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
