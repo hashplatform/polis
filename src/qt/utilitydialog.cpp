@@ -168,7 +168,7 @@ For more info see <a href=\"https://polispay.atlassian.net/wiki/display/DOC/Priv
         ui->aboutLogo->setVisible(false);
     }
     // Theme dependent Gfx in About popup
-    QString helpMessageGfx = ":/images/" + GUIUtil::getThemeName() + "/about";
+    QString helpMessageGfx = ":/images/about";
     QPixmap pixmap = QPixmap(helpMessageGfx);
     ui->aboutLogo->setPixmap(pixmap);
 }
