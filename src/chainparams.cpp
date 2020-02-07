@@ -113,8 +113,8 @@ static Consensus::LLMQParams llmq5_60 = {
         .type = Consensus::LLMQ_5_60,
         .name = "llmq_5_60",
         .size = 5,
-        .minSize = 3,
-        .threshold = 3,
+        .minSize = 2,
+        .threshold = 2,
 
         .dkgInterval = 24, // one DKG per hour
         .dkgPhaseBlocks = 2,
@@ -524,7 +524,7 @@ public:
             nExtCoinType = 1;
     
             // long living quorum params
-            consensus.llmqs[Consensus::LLMQ_50_60] = llmq50_60;
+            consensus.llmqs[Consensus::LLMQ_50_60] = llmq5_60;
             consensus.llmqs[Consensus::LLMQ_400_60] = llmq400_60;
             consensus.llmqs[Consensus::LLMQ_400_85] = llmq400_85;
             consensus.llmqChainLocks = Consensus::LLMQ_50_60;
