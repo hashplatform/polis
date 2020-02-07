@@ -418,8 +418,8 @@ public:
             consensus.BIP65Height = 2431; // 0000039cf01242c7f921dcb4806a5994bc003b48c1973ae0c89b67809c2bb2ab
             consensus.BIP66Height = 2075; // 0000002acdd29a14583540cb72e1c5cc83783560e38fa7081495d474fe1671f7
             consensus.DIP0001Height = 50;
-            consensus.DIP0003Height = 1500;
-            consensus.DIP0003EnforcementHeight = NEVER32;
+            consensus.DIP0003Height = 9465;
+            consensus.DIP0003EnforcementHeight = 9465;
             consensus.DIP0003EnforcementHash = uint256();
             consensus.powLimit = uint256S("0000fffff0000000000000000000000000000000000000000000000000000000");
             consensus.nPowTargetTimespan = 60 * 60 * 24; // polis: 1 day
@@ -540,7 +540,7 @@ public:
             nPoolMaxParticipants = 3;
             nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
     
-            vSporkAddresses = {"yMCScEFCuhFGQL8aBS8UPXnKriFtjMVWra"};
+            vSporkAddresses = {"yRiUNgbfBYp3SYXEqYLNepyVqPC3u3BxJW"};
             nMinSporkKeys = 1;
             fBIP9CheckMasternodesUpgraded = true;
             consensus.fLLMQAllowDummyCommitments = true;
