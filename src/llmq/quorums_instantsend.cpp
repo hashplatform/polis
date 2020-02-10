@@ -492,7 +492,7 @@ bool CInstantSendManager::CheckCanLock(const CTransaction& tx, bool printDebug, 
     // TODO decide if we should limit max input values. This was ok to do in the old system, but in the new system
     // where we want to have all TXs locked at some point, this is counterproductive (especially when ChainLocks later
     // depend on all TXs being locked first)
-//    CAmount maxValueIn = sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE);
+//    CAmount maxValueIn = 100000;
 //    if (nValueIn > maxValueIn * COIN) {
 //        if (printDebug) {
 //            LogPrint("instantsend", "CInstantSendManager::%s -- txid=%s: TX input value too high. nValueIn=%f, maxValueIn=%d", __func__,

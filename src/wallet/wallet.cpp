@@ -2682,7 +2682,7 @@ static void ApproximateBestSubset(std::vector<std::pair<CAmount, std::pair<const
         {
             for (unsigned int i = 0; i < vValue.size(); i++)
             {
-                if (fUseInstantSend && nTotal + vValue[i].first > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
+                if (fUseInstantSend && nTotal + vValue[i].first > 100000 * COIN) {
                     continue;
                 }
                 //The solver here uses a randomized algorithm,
@@ -2752,7 +2752,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMin
     // List of values less than target
     std::pair<CAmount, std::pair<const CWalletTx*,unsigned int> > coinLowestLarger;
     coinLowestLarger.first = fUseInstantSend
-                                        ? sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN
+                                        ? 100000 * COIN
                                         : std::numeric_limits<CAmount>::max();
     coinLowestLarger.second.first = NULL;
     std::vector<std::pair<CAmount, std::pair<const CWalletTx*,unsigned int> > > vValue;
@@ -3628,8 +3628,8 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
 
                     return false;
                 }
-                if (fUseInstantSend && nValueIn > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
-                    strFailReason += " " + strprintf(_("InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 POLIS."), sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE));
+                if (fUseInstantSend && nValueIn > 100000 * COIN) {
+                    strFailReason += " " + strprintf(_("InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 POLIS."), 100000);
                     return false;
                 }
 
