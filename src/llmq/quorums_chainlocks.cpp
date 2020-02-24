@@ -133,7 +133,7 @@ void CChainLocksHandler::ProcessNewChainLock(NodeId from, const llmq::CChainLock
         bestChainLock = clsig;
 
         CInv inv(MSG_CLSIG, hash);
-        g_connman->RelayInv(inv, LLMQS_PROTO_VERSION);
+        g_connman->RelayInv(inv);
 
         auto blockIt = mapBlockIndex.find(clsig.blockHash);
         if (blockIt == mapBlockIndex.end()) {

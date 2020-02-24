@@ -402,7 +402,7 @@ bool CInstantSendManager::ProcessTx(const CTransaction& tx, bool allowReSigning,
     }
     if (!islockHash.IsNull()) {
         CInv inv(MSG_ISLOCK, islockHash);
-        g_connman->RelayInvFiltered(inv, tx, LLMQS_PROTO_VERSION);
+        g_connman->RelayInvFiltered(inv, tx);
     }
 
     auto conflictingLock = GetConflictingLock(tx);
@@ -954,11 +954,11 @@ void CInstantSendManager::ProcessInstantSendLock(NodeId from, const uint256& has
 
     CInv inv(MSG_ISLOCK, hash);
     if (tx != nullptr) {
-        g_connman->RelayInvFiltered(inv, *tx, LLMQS_PROTO_VERSION);
+        g_connman->RelayInvFiltered(inv, *tx);
     } else {
         // we don't have the TX yet, so we only filter based on txid. Later when that TX arrives, we will re-announce
         // with the TX taken into account.
-        g_connman->RelayInvFiltered(inv, islock.txid, LLMQS_PROTO_VERSION);
+        g_connman->RelayInvFiltered(inv, islock.txid);
     }
 
     RemoveMempoolConflictsForLock(hash, islock);

@@ -691,6 +691,10 @@ void CNode::copyStats(CNodeStats &stats)
     // Leave string empty if addrLocal invalid (not filled in yet)
     CService addrLocalUnlocked = GetAddrLocal();
     stats.addrLocal = addrLocalUnlocked.IsValid() ? addrLocalUnlocked.ToString() : "";
+    {
+        LOCK(cs_mnauth);
+        X(verifiedProRegTxHash);
+    }
 }
 #undef X
 
@@ -1370,8 +1374,14 @@ void CConnman::ThreadSocketHandler()
 
         //
         // Service each socket
-        //
-        std::vector<CNode*> vNodesCopy = CopyNodeVector();
+        std::vector<CNode*> vNodesCopy;
+        {
+            LOCK(cs_vNodes);
+            vNodesCopy = vNodes;
+            for (CNode* pnode : vNodesCopy)
+                pnode->AddRef();
+        }
+
         BOOST_FOREACH(CNode* pnode, vNodesCopy)
         {
             if (interruptNet)
@@ -1494,7 +1504,11 @@ void CConnman::ThreadSocketHandler()
                 }
             }
         }
-        ReleaseNodeVector(vNodesCopy);
+        {
+            LOCK(cs_vNodes);
+            for (CNode* pnode : vNodesCopy)
+                pnode->Release();
+        }
     }
 }
 
@@ -2899,16 +2913,18 @@ void CConnman::RelayTransaction(const CTransaction& tx)
     }
 }
 
-void CConnman::RelayInv(CInv &inv, const int minProtoVersion) {
+void CConnman::RelayInv(CInv &inv) {
     LOCK(cs_vNodes);
+    const int minProtoVersion = InUseProtocol();
     for (const auto& pnode : vNodes)
         if(pnode->nVersion >= minProtoVersion)
             pnode->PushInventory(inv);
 }
 
-void CConnman::RelayInvFiltered(CInv &inv, const CTransaction& relatedTx, const int minProtoVersion)
+void CConnman::RelayInvFiltered(CInv &inv, const CTransaction& relatedTx)
 {
     LOCK(cs_vNodes);
+    const int minProtoVersion = InUseProtocol();
     for (const auto& pnode : vNodes) {
         if(pnode->nVersion < minProtoVersion)
             continue;
@@ -2921,9 +2937,10 @@ void CConnman::RelayInvFiltered(CInv &inv, const CTransaction& relatedTx, const 
     }
 }
 
-void CConnman::RelayInvFiltered(CInv &inv, const uint256& relatedTxHash, const int minProtoVersion)
+void CConnman::RelayInvFiltered(CInv &inv, const uint256& relatedTxHash)
 {
     LOCK(cs_vNodes);
+    const int minProtoVersion = InUseProtocol();
     for (const auto& pnode : vNodes) {
         if(pnode->nVersion < minProtoVersion) continue;
         {

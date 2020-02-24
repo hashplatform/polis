@@ -149,7 +149,7 @@ bool CQuorumBlockProcessor::ProcessBlock(const CBlock& block, const CBlockIndex*
         if (!hasCommitmentInNewBlock && isCommitmentRequired) {
             // If no non-null commitment was mined for the mining phase yet and the new block does not include
             // a (possibly null) commitment, the block should be rejected.
-            // return state.DoS(100, false, REJECT_INVALID, "bad-qc-missing");
+            return state.DoS(100, false, REJECT_INVALID, "bad-qc-missing");
         }
     }
 
@@ -493,7 +493,7 @@ void CQuorumBlockProcessor::AddMinableCommitment(const CFinalCommitment& fqc)
     // We only relay the new commitment if it's new or better then the old one
     if (relay) {
         CInv inv(MSG_QUORUM_FINAL_COMMITMENT, commitmentHash);
-        g_connman->RelayInv(inv, DMN_PROTO_VERSION);
+        g_connman->RelayInv(inv);
     }
 }
 

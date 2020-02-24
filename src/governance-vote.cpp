@@ -134,7 +134,7 @@ void CGovernanceVote::Relay(CConnman& connman) const
     }
 
     CInv inv(MSG_GOVERNANCE_OBJECT_VOTE, GetHash());
-    connman.RelayInv(inv, minVersion);
+    connman.RelayInv(inv);
 }
 
 void CGovernanceVote::UpdateHash() const

@@ -550,7 +550,8 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-limitancestorsize=<n>", strprintf("Do not accept transactions whose size with all in-mempool ancestors exceeds <n> kilobytes (default: %u)", DEFAULT_ANCESTOR_SIZE_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantcount=<n>", strprintf("Do not accept transactions if any ancestor would have <n> or more in-mempool descendants (default: %u)", DEFAULT_DESCENDANT_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantsize=<n>", strprintf("Do not accept transactions if any ancestor would have more than <n> kilobytes of in-mempool descendants (default: %u).", DEFAULT_DESCENDANT_SIZE_LIMIT));
-        strUsage += HelpMessageOpt("-bip9params=deployment:start:end", "Use given start/end times for specified BIP9 deployment (regtest-only)");
+        strUsage += HelpMessageOpt("-bip9params=<deployment>:<start>:<end>(:<window>:<threshold>)", "Use given start/end times for specified BIP9 deployment (regtest-only). Specifying window and threshold is optional.");
+        strUsage += HelpMessageOpt("-watchquorums=<n>", strprintf("Watch and validate quorum communication (default: %u)", llmq::DEFAULT_WATCH_QUORUMS));
     }
     std::string debugCategories = "addrman, alert, bench, cmpctblock, coindb, db, http, leveldb, libevent, lock, mempool, mempoolrej, net, proxy, prune, rand, reindex, rpc, selectcoins, tor, zmq, "
                                   "polis (or specifically: gobject, instantsend, keepass, masternode, mnpayments, mnsync, privatesend, spork)"; // Don't translate these and qt below
@@ -1376,6 +1377,7 @@ bool AppInitParameterInteraction()
         if (!ParseInt32(vBudgetParams[2], &nSuperblockStartBlock)) {
             return InitError(strprintf("Invalid nSuperblockStartBlock (%s)", vBudgetParams[2]));
         }
+        UpdateRegtestBudgetParameters(nMasternodePaymentsStartBlock, nBudgetPaymentsStartBlock, nSuperblockStartBlock);
     }
 
     if (chainparams.NetworkIDString() == CBaseChainParams::DEVNET) {
@@ -1387,6 +1389,25 @@ bool AppInitParameterInteraction()
         return InitError("Difficulty and subsidy parameters may only be overridden on devnet.");
     }
 
+    if (chainparams.NetworkIDString() == CBaseChainParams::DEVNET) {
+        std::string llmqChainLocks = GetArg("-llmqchainlocks", Params().GetConsensus().llmqs.at(Params().GetConsensus().llmqChainLocks).name);
+        Consensus::LLMQType llmqType = Consensus::LLMQ_NONE;
+        for (const auto& p : Params().GetConsensus().llmqs) {
+            if (p.second.name == llmqChainLocks) {
+                llmqType = p.first;
+                break;
+            }
+        }
+        if (llmqType == Consensus::LLMQ_NONE) {
+            return InitError("Invalid LLMQ type specified for -llmqchainlocks.");
+        }
+    } else if (IsArgSet("-llmqchainlocks")) {
+        return InitError("LLMQ type for ChainLocks can only be overridden on devnet.");
+    }
+
+    if (IsArgSet("-maxorphantx")) {
+        InitWarning("-maxorphantx is not supported anymore. Use -maxorphantxsize instead.");
+    }
     return true;
 }
 
@@ -1815,6 +1836,8 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                     strLoadError = _("You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain");
                     break;
                 }
+
+                deterministicMNManager->UpgradeDBIfNeeded();
 
                 uiInterface.InitMessage(_("Verifying blocks..."));
                 if (fHavePruned && GetArg("-checkblocks", DEFAULT_CHECKBLOCKS) > MIN_BLOCKS_TO_KEEP) {

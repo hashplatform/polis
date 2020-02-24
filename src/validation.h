@@ -592,4 +592,7 @@ int CurrentMinStakeAge(int nTimePeriod);
 
 bool FullDIP0003Mode();
 
+//! Returns the protocol version based on height
+int InUseProtocol();
+
 #endif // BITCOIN_VALIDATION_H
